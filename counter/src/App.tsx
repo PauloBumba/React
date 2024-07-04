@@ -1,14 +1,13 @@
+// src/App.tsx
 import React from 'react';
-import { Count } from './Components/Counter';
+import Counter from './components/counter.tsx'; // Importa o componente Counter com a primeira letra maiúscula
 
-
-const App: React.FC = () => {
-    return (
-        <div>
-            <h1>App Component</h1>
-            <Count/>
-        </div>
-    );
-};
-
-export default App;
+export function App() {
+  return (
+    <header>
+      <div>
+        <Counter />
+      </div>
+    </header>
+  );
+}
