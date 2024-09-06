@@ -1,36 +1,46 @@
-import { FC, useEffect, useState } from "react"
+import { useEffect, useState } from 'react';
 
-export const App :FC = ()=>
-{
-  const [user , SetUser] = useState([])
-  useEffect(()=>{
-    const fetchData = async () => {
+function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserGit = async () => {
+      const apiUrl = "https://api.github.com/users/PauloBumba";
+
       try {
-        const response = await fetch("https://api.github.com/users/PauloBumba"); // Corrected the URL to 'https'
+        const response = await fetch(apiUrl);
         if (!response.ok) {
-          throw new Error("Error fetching user from GitHub"); // Corrected error message and logic
+          throw new Error("Erro ao buscar usuário do GitHub");
         }
         const data = await response.json();
-        SetUser(data);
+        setData(data);
       } catch (error) {
-        console.error(error); // Log the error to the console
+        console.error("Erro ao carregar os dados do GitHub:", error);
       }
     };
 
-    fetchData(); 
-  },[])
-  return(
-    <div>
-      {
-        user?(
-          <div>
-            <p > Nome {user.name}</p>
-            <img src={user.avatar_url} alt="" />
-          </div>
-        ):(
-          <p>Loading</p>
-        )
-      }
-        
-    </div>)
+    fetchUserGit();
+  }, []);
+
+  return (
+    <>
+      {data ? (
+        <div id='container'>
+          <h1>Dados do GitHub</h1>
+          <p>Nome: {data?.name}</p>
+          <img src={data?.avatar_url} alt="Imagem do GitHub" />
+          <p>Aspiração: {data?.bio}</p>
+          <a href={data?.html_url} target="_blank" rel="noopener noreferrer">Clique aqui para ir ao GitHub</a>
+          <p>Localização: {data?.location}</p>
+          <p>Formação: {data?.company}</p>
+        </div>
+      ) : (
+        <div>
+          <p>Erro ao carregar os dados do GitHub</p>
+        </div>
+      )}
+    </>
+  );
 }
+
+export default App;
